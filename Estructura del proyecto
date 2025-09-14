@@ -1,0 +1,5 @@
+/mi_proyecto_flask
+│── app.py
+│── requirements.txt
+│── /Conexión
+│     └── conexion.py
