@@ -1,0 +1,25 @@
+from flask import request, jsonify
+
+@app.route("/usuarios", methods=["GET"])
+def obtener_usuarios():
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM usuarios")
+    usuarios = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return jsonify(usuarios)
+
+@app.route("/usuarios", methods=["POST"])
+def crear_usuario():
+    nuevo_usuario = request.json
+    nombre = nuevo_usuario["nombre"]
+    mail = nuevo_usuario["mail"]
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("INSERT INTO usuarios (nombre, mail) VALUES (%s, %s)", (nombre, mail))
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return {"mensaje": "Usuario agregado correctamente"}, 201
